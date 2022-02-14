@@ -1,2 +1,2 @@
-# shopping_bot
+# automated_shopping
 Automated shopping on Amazon.
