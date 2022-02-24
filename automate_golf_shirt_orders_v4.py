@@ -49,12 +49,8 @@ for asin, link in asins_links_dict.items():
     print(item)
     driver.get(link)       
     time.sleep(5)
-    # asin_check = driver.find_element(By.ID, 'detailBullets_feature_div' ).find_element(By.CLASS_NAME, 'a-text-bold').text
-    # a-text-bold appears on the page multiple times.
     item_details = driver.find_element(By.ID, 'detailBullets_feature_div' ).text
-    # print("Original item details:")
-    # print(item_details)
-    # Create a text file to readlines() from.
+
     # Idea: split into two lists, based on the ':'. Then use the zip dictionary thing.
     if item == 1:
         with open(orders_text_file, 'w') as f:            
@@ -64,6 +60,7 @@ for asin, link in asins_links_dict.items():
             f.write("\n")
     else:
         with open('shop_text_details.txt', 'a', encoding='UTF-8') as f:
+            replace_text = f"_{asin}:"
             item_details = item_details.replace(' :', replace_text)
             f.write(item_details)
             f.write("\n")
@@ -72,6 +69,19 @@ for asin, link in asins_links_dict.items():
     driver.refresh()
     item +=1
 
+details_keys = []
+details_values = []
+with open(orders_text_file, 'r') as orders_f:
+    for line in orders_f:
+        delim = str.find(line, ':')
+        key_part = line[:delim].strip()
+        value_part = line[delim:].replace(': ', '').strip()
+        details_keys.append(key_part)
+        details_values.append(value_part)
+
+details_zip = zip(details_keys, details_values)
+details_dict = {key: value for key, value in details_zip}
+
+print(details_dict)
 
 
-    
